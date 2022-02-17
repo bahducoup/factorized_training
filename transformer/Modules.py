@@ -26,7 +26,7 @@ class ScaledDotProductAttention(nn.Module):
 
         if mask is not None:
             #attn = attn.masked_fill(mask == 0, -1e9)
-            attn = attn.masked_fill(mask == 0, -(2 ** 15)) for FP 16
+            attn = attn.masked_fill(mask == 0, -(2 ** 15))
 
         attn = self.dropout(F.softmax(attn, dim=-1))
         output = torch.matmul(attn, v)
