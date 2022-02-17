@@ -233,7 +233,7 @@ def train(vanilla_model, low_rank_model, training_data, validation_data, test_da
             decompose_end = torch.cuda.Event(enable_timing=True)
 
             decompose_start.record()
-            est_rank_list = rank_estimation(epoch_i, vanilla_model)
+            # est_rank_list = rank_estimation(epoch_i, vanilla_model)
             lowrank_model = decompose_vanilla_model(vanilla_model=vanilla_model, 
                                                     low_rank_model=lowrank_model,
                                                     rank_ratio=0.25)
@@ -493,7 +493,7 @@ def main():
        optim.Adam(lowrank_transformer.parameters(), betas=(0.9, 0.98), eps=1e-09),
        2.0, opt.d_model, opt.n_warmup_steps)
 
-    train(vanilla_transformer, low_rank_model, training_data, validation_data, test_data, vanilla_optimizer, lowrank_optimizer, device, opt, scaler)
+    train(vanilla_transformer, lowrank_transformer, training_data, validation_data, test_data, vanilla_optimizer, lowrank_optimizer, device, opt, scaler)
 
 
 def prepare_dataloaders_from_bpe_files(opt, device):
