@@ -183,7 +183,7 @@ def eval_epoch(model, validation_data, device, opt):
     return loss_per_word, accuracy, system_bleu
 
 
-def train(vanilla_model, low_rank_model, training_data, validation_data, test_data, vanilla_optimizer, lowrank_optimizer, device, opt, scaler):
+def train(vanilla_model, lowrank_model, training_data, validation_data, test_data, vanilla_optimizer, lowrank_optimizer, device, opt, scaler):
     ''' Start training '''
 
     log_train_file = os.path.join(opt.output_dir, 'train.log')
