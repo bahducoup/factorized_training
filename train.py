@@ -316,14 +316,14 @@ def decompose_vanilla_model(vanilla_model, low_rank_model, rank_ratio=0.25):
     for p_index, (name, param) in enumerate(vanilla_model.state_dict().items()):
         if len(param.size()) == 2 and p_index not in range(0, 14) and p_index not in range(76, 96) and p_index != 188:
             rank = min(param.size()[0], param.size()[1])
-            sliced_rank = rank * rank_ratio
+            sliced_rank = int(rank * rank_ratio)
             rank_counter += 1
 
             u, s, v = torch.svd(param)
             u_weight = u * torch.sqrt(s)
             v_weight = torch.sqrt(s) * v
             u_weight_sliced, v_weight_sliced = u_weight[:, 0:sliced_rank], v_weight[:, 0:sliced_rank]
-            #collected_weights.append(u_weight_sliced)
+            
             collected_weights.append(v_weight_sliced.t())
             collected_weights.append(u_weight_sliced)
         else:
@@ -491,7 +491,7 @@ def main():
 
     lowrank_optimizer = ScheduledOptim(
        optim.Adam(lowrank_transformer.parameters(), betas=(0.9, 0.98), eps=1e-09),
-       2.0, opt.d_model, opt.n_warmup_steps)
+       2.0, opt.d_model, opt.n_warmup_steps, scaler=scaler)
 
     train(vanilla_transformer, lowrank_transformer, training_data, validation_data, test_data, vanilla_optimizer, lowrank_optimizer, device, opt, scaler)
 
