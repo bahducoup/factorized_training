@@ -388,10 +388,7 @@ def decompose_vanilla_model(vanilla_model, lowrank_model, rank_ratio=0.25):
     reconstructed_state_dict = {}
     model_counter = 0
     for p_index, (name, param) in enumerate(lowrank_model.state_dict().items()):
-        print(name, weight_names[model_counter])
-        print(f'{name}: {param.size()}, {collected_weights[model_counter].size()}')
-        print()
-        # assert param.size() == collected_weights[model_counter].size(), f'{name}: {param.size()}, {collected_weights[model_counter].size()}'
+        assert param.size() == collected_weights[model_counter].size(), f'{name}: {param.size()}, {collected_weights[model_counter].size()}'
         reconstructed_state_dict[name] = collected_weights[model_counter]
         model_counter += 1
     lowrank_model.load_state_dict(reconstructed_state_dict)
