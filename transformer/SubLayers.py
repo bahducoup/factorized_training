@@ -259,11 +259,11 @@ class LowRankResidualPositionwiseFeedForward(nn.Module):
         super().__init__()
         self.w_1_u = nn.Linear(int(d_in/4), d_hid, bias=False) # position-wise
         self.w_1_v = nn.Linear(d_in, int(d_in/4), bias=False) # position-wise
-        self.w_1_res = nn.Linear(d_in, d_hid, bias=False)
-
+        self.w_1_res = nn.Linear(d_in, d_hid)
+        
         self.w_2_u = nn.Linear(int(d_in/4), d_in, bias=False) # position-wise
         self.w_2_v = nn.Linear(d_hid, int(d_in/4), bias=False) # position-wise
-        self.w_2_res = nn.Linear(d_hid, d_in, bias=False)
+        self.w_2_res = nn.Linear(d_hid, d_in)
         
         self.layer_norm = nn.LayerNorm(d_in, eps=1e-6)
         self.dropout = nn.Dropout(dropout)
